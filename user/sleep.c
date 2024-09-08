@@ -5,6 +5,16 @@
 int
 main(int argc, char *argv[])
 {
-  fprintf(1, "sleep does not work\n");
-  exit(0);
+    if (argc != 2){
+        fprintf(2, "enter sleep 10\n");
+        exit(1);
+    }
+    int time = atoi(argv[1]);
+    if (time < 0){
+    fprintf(2, "Invalid argument\n");
+    exit(1);
+    }
+
+    sleep(time);
+    exit(0);
 }
