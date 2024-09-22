@@ -5,7 +5,7 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
-
+#include "sysinfo.h"
 uint64
 sys_exit(void)
 {
@@ -97,4 +97,70 @@ uint64 sys_dosys(void) {
 
     return 0;
 }
+
+static unsigned int rseedvalue = 0;
+
+uint64
+sys_rseed(void) {
+    int seed;
+    argint(0, &seed);
+    rseedvalue = seed;
+    return 0;
+}
+
+#define MY_RAND_MAX ((1U << 31) - 1)
+
+uint64
+sys_rinter(void) {
+    int max;
+    argint(0, &max);
+    if (max <= 0) {
+        return -1;
+    }
+    rseedvalue = (1103515245 * rseedvalue + 12345) & MY_RAND_MAX;
+    return rseedvalue % max;
+}
+
+   
+uint64
+sys_trace(void) {
+    int mask;
+
+
+    argint(0, &mask);
+
+
+    struct proc *p = myproc();
+    p->trace_mask = mask;
+
+    return 0;
+}
+
+uint64
+sysinfo(void)
+{
+  struct proc *p = myproc();
+  struct sysinfo info;
+  info.freemem = get_freemem();
+  info.nproc = get_nproc();
+  uint64 addr;
+  argaddr(0, &addr);
+  if (copyout(p->pagetable, addr, (char *)&info, sizeof(info)) < 0) {
+    return -1;
+  }
+  return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

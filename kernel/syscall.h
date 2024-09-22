@@ -21,3 +21,7 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_dosys  22
+#define SYS_rseed  23
+#define SYS_rinter 24
+#define SYS_trace  25
+#define SYS_sysinfo 26

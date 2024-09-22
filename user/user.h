@@ -25,9 +25,10 @@ int sleep(int);
 int uptime(void);
 int trace(int);
 int sysinfo(struct sysinfo*);
-int rseed(int);
-int rinter(int);
-
+int rseed(int seed);
+int rinter(int max);
+int trace(int mask);
+int sysinfo(struct sysinfo *);
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
